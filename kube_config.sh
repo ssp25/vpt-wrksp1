@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
+export KOPS_STATE_STORE=s3://clusters.sspcloudpro.co.in
 API_SERVER="https://api.k8s.sspcloudpro.co.in"
-TOKEN="45guqmXEt3BBgrcdqAAyUtwyr8Rbnmy3"
+TOKEN="XzqOlBkIdWrppXCmsj3baCqxOj3LLPcv"
 CLUSTER_NAME="k8s.sspcloudpro.co.in"
 
 kubectl config set preferences.colors true

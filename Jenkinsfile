@@ -37,7 +37,7 @@ def branchTag() {
 }
 
 def deploymentUpdateSspWebNode(context, namespace, newVersion) {
-    sh "/usr/local/bin/kubectl set image deployment ssp-nodejs ssp-nodejs=${newVersion} --context=${context} --namespace=${namespace}"
+    sh "/usr/local/bin/kubectl set image deployment vpt-node-deployment vpt-node=${newVersion} --context=${context} --namespace=${namespace}"
 
 
   //  sh "delivery/pearl-squad/artisan-mobile-bff/env/reload-secret.sh ${namespace} ${context}"
@@ -52,8 +52,8 @@ def settings = settings()
  //def namespace = clusterSettings.namespace
  def context
  def namespace
- context: 'minikube'
- namespace: 'ssp-dev'
+ context: 'k8s.sspcloudpro.co.in'
+ namespace: 'develop'
  image: 'ssp25/web-node'
  //branchTag: branchTag()
  //branchBTag: branchAndBuildTag()
@@ -63,12 +63,12 @@ def settings = settings()
 stage('build') {
  //def image = docker.build("ssp25/ssp-nodejs-proj")
  sh " cd $WORKSPACE"
- sh "/usr/bin/docker build -t ssp25/ssp-nodejs-proj:${branchAndBuildTag()} ."
+ sh "/usr/bin/docker build -t ssp25/vpt-web-node:${branchAndBuildTag()} ."
  //sh "/usr/local/bin/docker build -t ssp25/ssp-nodejs-proj:${branchTag()} ."
 }
 stage('Push') {
   sh " cd $WORKSPACE"
-  sh "/usr/bin/docker push ssp25/ssp-nodejs-proj:${branchAndBuildTag()}"
+  sh "/usr/bin/docker push ssp25/vpt-web-node:${branchAndBuildTag()}"
  //sh "/usr/local/bin/docker push ssp25/ssp-nodejs-proj:${branchTag()}"
  //image.push(branchTag())
  //image.push(branchAndBuildTag())
@@ -78,7 +78,7 @@ if('develop' == branchTag()) {
  stage('deploy') {
     // docker.image(settings.kubectlImage).inside {
     sh "sh jenkins/kube_config.sh"
-       deploymentUpdateSspWebNode("k8s.sspcloudpro.co.in", "develop", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}")
+       deploymentUpdateSspWebNode("k8s.sspcloudpro.co.in", "develop", "ssp25/vpt-web-node:${branchAndBuildTag()}")
   //   }
  }
 }
@@ -86,7 +86,7 @@ if('develop' == branchTag()) {
 
 // Our Main Job starts from here....!!!
 
-node ('ssp-aws') {
+node () {
      deleteDir()
 
     try {
