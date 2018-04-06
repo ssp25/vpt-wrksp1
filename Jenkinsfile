@@ -99,7 +99,7 @@ node () {
   //      notify(" Job Started ")
       //  loginToDocker()
         withCredentials([usernamePassword(credentialsId: 'ssp-docker-hub', passwordVariable: 'dockerhubPass', usernameVariable: 'dockerhubUser')]) {
-            sh "/usr/bin/docker login -u ${dockerhubUser} -p ${dockerhubPass}"
+            sh "docker login -u ${dockerhubUser} -p ${dockerhubPass}"
         }
 // Calling this method for build and push and deploy the docker image.
   doBuild()
